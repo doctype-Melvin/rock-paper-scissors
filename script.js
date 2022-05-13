@@ -28,7 +28,6 @@ const cpuScore = document.querySelector('#cpu-score');
 
 //Game display
 const result = document.querySelector('.roundResult');
-const history = document.querySelector('.gameHistory');
 
 //Player choice initiates first round
 const playerChoice = (e) => {
@@ -36,12 +35,14 @@ const playerChoice = (e) => {
     playRound(choice);
 }
 //Add event listeners to icons 
-choices.forEach(button => button.addEventListener('click', playerChoice));
+const startGame = () => {
+    choices.forEach(button => button.addEventListener('click', playerChoice));
+}
+window.onclick = startGame()
 //Removes event listeners and triggers pop up
 const gameOver = () => {
     choices.forEach(button => button.removeEventListener('click', playerChoice));
-    const popup = document.querySelector('.popup');
-    popup.style.display = 'block'
+    popUp();
 }
 const playRound = (player, cpu) => { //Takes the objects and passes them for winner evaluation
     this.player = player;
@@ -53,12 +54,12 @@ const playRound = (player, cpu) => { //Takes the objects and passes them for win
                 let text = `beats`;
                 showResult(player, text, cpu)
             }
-            else if(cpuWin) {
-                trackScore(cpuScore);
-                let text = `beaten by`;
-                showResult(player, text, cpu)
-            }
-            else draw(player, cpu);
+                else if(cpuWin) {
+                    trackScore(cpuScore);
+                    let text = `beaten by`;
+                    showResult(player, text, cpu)
+                }
+                    else draw(player, cpu);
 }
 
 const whoWins = (winner, loser) => { //Evaluates winner
@@ -83,7 +84,7 @@ pHand.classList.add('pResult');
     cHand.classList.add('cResult');
         let textResult = document.createElement('div');
         textResult.classList.add('textResult');
-        result.append(pHand, textResult, cHand);
+            result.append(pHand, textResult, cHand);
 const showResult = (ply, text, cpu) => {
     pHand.textContent = ply.icon;
     cHand.textContent = cpu.icon;
@@ -95,4 +96,33 @@ let button = document.createElement('button');
 button.classList.add('restart');
 button.textContent = 'Restart';
 
+const popup = document.querySelector('.popup');
+const popUp = () => { //opens popup modal with restart button 
+    popup.style.display = 'block';
+    const message = document.querySelector('.message')
+    if(parseInt(playerScore.innerText) > parseInt(cpuScore.innerText)) {
+        message.textContent = `🎉 You have won this match 🎉`
+        } else if(parseInt(cpuScore.innerText) > parseInt(playerScore.innerText)) {
+            message.textContent = `👺 Computer has won this match 👺`
+        }
+    message.append(button)
+        button.addEventListener('click', () => {
+            resetGame()
+        });
+            window.onclick = (e) => { //close popup by clicking window
+                if (e.target == popup) {
+                    resetGame()
+                }
+            }
+}
+
+const resetGame = () => {
+    popup.style.display = 'none';
+    playerScore.innerText = 0;
+    cpuScore.innerText = 0;
+    pHand.textContent = '';
+    cHand.textContent = '';
+    textResult.textContent = '';
+    startGame();
+}
 })()
