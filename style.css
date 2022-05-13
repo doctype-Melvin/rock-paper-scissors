@@ -27,6 +27,19 @@ html, body {
     padding: 10px;
 }
 
+.scores {
+    display: flex;
+    justify-content: space-around;
+    width: max(300px, 40vw);
+    text-align: center;
+    margin-inline: auto;
+    margin-bottom: 10px;
+}
+
+.player, .cpu {
+    font-size: 2.25rem;
+}
+
 .choices {
 background-color: var(--darkest-shade);
 display: flex;
