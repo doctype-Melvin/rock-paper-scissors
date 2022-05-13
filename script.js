@@ -37,9 +37,11 @@ const playerChoice = (e) => {
 }
 //Add event listeners to icons 
 choices.forEach(button => button.addEventListener('click', playerChoice));
-//Removes event listeners at a score of 5
+//Removes event listeners and triggers pop up
 const gameOver = () => {
     choices.forEach(button => button.removeEventListener('click', playerChoice));
+    const popup = document.querySelector('.popup');
+    popup.style.display = 'block'
 }
 const playRound = (player, cpu) => { //Takes the objects and passes them for winner evaluation
     this.player = player;
