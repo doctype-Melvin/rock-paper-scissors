@@ -17,15 +17,19 @@ const rps =
             beats: 'paper'
         }
     ];
-
+//Computer choice function
 const cpuChoice = () => rps[Math.floor(Math.random()*rps.length)]
-
+//Player icons
 const choices = document.querySelectorAll('.icon');
-//Temporary setup with counter to remove event listener
-let count = 0;
+
+//Scores
+const playerScore = document.querySelector('#ply-score');
+const cpuScore = document.querySelector('#cpu-score')
+
+//Player choice initiates first round
 const playerChoice = (e) => {
-    count++
-    if (count === 5) {//After 5 rounds remove event listeners
+    if ((parseInt(playerScore.innerText) === 5 && parseInt(cpuScore.innerText) < 5) || 
+        (parseInt(cpuScore.innerText) === 5 && parseInt(playerScore.innerText) < 5)) {//After 5 wins remove event listeners
         choices.forEach(button => button.removeEventListener('click', playerChoice))
     }
     let choice = rps.find(el => el.name === e.target.id)
@@ -40,8 +44,12 @@ const playRound = (player, cpu) => { //Takes the objects and passes them for win
     cpu = cpuChoice();
         let playerWin = whoWins(player, cpu);
         let cpuWin = whoWins(cpu, player);
-            if(playerWin) {console.log(`Player wins`)}
-            else if(cpuWin) {console.log(`Computer wins`)}
+            if(playerWin) {
+                trackScore(playerScore)
+            }
+            else if(cpuWin) {
+                trackScore(cpuScore)
+            }
             else draw()
 }
 
@@ -51,5 +59,10 @@ const whoWins = (winner, loser) => { //Evaluates winner
 
 const draw = () => { //Draw scenario
     console.log(`draw`)
+}
+
+const trackScore = (winner) => { //Takes winner score and adds 1
+    winner.innerText = parseInt(winner.innerText)+1
+    return winner.innerText
 }
 })()
